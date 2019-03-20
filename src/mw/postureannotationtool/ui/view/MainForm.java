@@ -25,6 +25,7 @@ public class MainForm extends JFrame {
     private JPanel panel;
     private JLabel pointsCountLabel;
     private ImagePanel imagePanel;
+    private JLabel helperImageLabel;
 
     public MainForm(){
         setSize(WIDTH, HEIGHT);
@@ -92,5 +93,9 @@ public class MainForm extends JFrame {
 
     public ImagePanel getImagePanel() {
         return imagePanel;
+    }
+
+    public JLabel getHelperImageLabel() {
+        return helperImageLabel;
     }
 }

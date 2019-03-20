@@ -1,14 +1,19 @@
 package mw.postureannotationtool.ui.controller;
 
 import mw.postureannotationtool.ui.ImagePanel;
+import mw.postureannotationtool.ui.model.Posture;
 import mw.postureannotationtool.ui.view.MainForm;
 
 import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainFormController {
+
+
 
     private MainForm mainForm;
 
@@ -27,9 +32,10 @@ public class MainFormController {
     private JPanel panel;
     private JLabel pointsCountLabel;
     private ImagePanel imagePanel;
+    private JLabel helperImageLabel;
 
     private File directory;
-    private ArrayList<File> files;
+    private List<File> files;
 
     public MainFormController() {
         initComponents();
@@ -61,6 +67,7 @@ public class MainFormController {
         panel = mainForm.getPanel();
         pointsCountLabel = mainForm.getPointsCountLabel();
         imagePanel = mainForm.getImagePanel();
+        helperImageLabel = mainForm.getHelperImageLabel();
     }
 
     private void initListeners(){
@@ -70,8 +77,8 @@ public class MainFormController {
             loadNextImage();
         });
         nextImageButton.addActionListener(e -> loadNextImage());
-        selectPersonButton.addActionListener(e -> imagePanel.startDrawingRectangle());
-        selectPointsButton.addActionListener(e -> imagePanel.startDrawingPoints());
+        selectPersonButton.addActionListener(e -> selectPerson());
+        selectPointsButton.addActionListener(e -> selectPoints());
     }
 
     private void loadNextImage() {
@@ -119,13 +126,39 @@ public class MainFormController {
         }
     }
 
-    private ArrayList<File> getImageFiles(File[] files) {
-        ArrayList<File> imageFiles = new ArrayList<>();
+    private LinkedList<File> getImageFiles(File[] files) {
+        LinkedList<File> imageFiles = new LinkedList<>();
         Arrays.stream(files)
                 .filter(File::isFile)
                 .filter(f -> f.getName().matches(".+\\.(jpg|jpeg|png)"))
                 .forEach(imageFiles::add);
         return imageFiles;
+    }
+
+    private void selectPerson(){
+        imagePanel.startDrawingRectangle();
+    }
+
+    private void selectPoints(){
+        if (frontRadioButton.isSelected() || backRadioButton.isSelected() || rightRadioButton.isSelected() || leftRadioButton.isSelected()) {
+            ImageIcon icon = new ImageIcon();
+            if (frontRadioButton.isSelected()) {
+                icon = new ImageIcon(Posture.FRONT_POINTS_IMAGES.get("RIGHT_EYE"));
+            }
+            if (backRadioButton.isSelected()) {
+                icon = new ImageIcon(Posture.BACK_POINTS_IMAGES.get("C7"));
+            }
+            if (rightRadioButton.isSelected()) {
+                icon = new ImageIcon(Posture.SIDE_POINTS_IMAGES.get("EAR"));
+            }
+            if (leftRadioButton.isSelected()) {
+                icon = new ImageIcon(Posture.SIDE_POINTS_IMAGES.get("EAR"));
+            }
+            helperImageLabel.setIcon(icon);
+            imagePanel.startDrawingPoints();
+        } else {
+            JOptionPane.showMessageDialog(mainForm,"Select posture type");
+        }
     }
 
 }
