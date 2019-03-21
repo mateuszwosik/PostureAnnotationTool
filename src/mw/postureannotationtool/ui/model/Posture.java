@@ -59,9 +59,9 @@ public abstract class Posture {
             {"TH12","res/images/back/th12.jpg"},
             {"S1","res/images/back/s1.jpg"},
             {"LEFT_SHOULDER_BLADE","res/images/back/left_shoulder_blade.jpg"},
-            {"LEFT_LOWER_ANGLE_SHOULDER_BLADE","res/images/back/left_lowe_angle_shoulder_blade.jpg"},
+            {"LEFT_LOWER_ANGLE_SHOULDER_BLADE","res/images/back/left_lower_angle_shoulder_blade.jpg"},
             {"RIGHT_SHOULDER_BLADE","res/images/back/right_shoulder_blade.jpg"},
-            {"RIGHT_LOWER_ANGLE_SHOULDER_BLADE","res/images/back/right_lowe_angle_shoulder_blade.jpg"},
+            {"RIGHT_LOWER_ANGLE_SHOULDER_BLADE","res/images/back/right_lower_angle_shoulder_blade.jpg"},
             {"LEFT_PSIS","res/images/back/left_psis.jpg"},
             {"RIGHT_PSIS","res/images/back/right_psis.jpg"},
             {"LEFT_HEEL","res/images/back/left_heel.jpg"},
@@ -139,10 +139,10 @@ public abstract class Posture {
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
     public enum PostureType {
-        FRONT("Front"),
-        BACK("Back"),
-        RIGHT("Right"),
-        LEFT("Left");
+        FRONT("front"),
+        BACK("back"),
+        RIGHT("right"),
+        LEFT("left");
 
         private String name;
 
@@ -204,6 +204,15 @@ public abstract class Posture {
         @Override
         public int hashCode() {
             return Objects.hash(name, x, y);
+        }
+
+        @Override
+        public String toString(){
+            return this.getName() +
+                    ";" +
+                    this.getX() +
+                    ";" +
+                    this.getY();
         }
 
     }
