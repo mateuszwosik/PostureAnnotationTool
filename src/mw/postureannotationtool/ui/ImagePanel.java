@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 //TODO Split this class to View and Controller (REFACTORING NEEDED!!!)
+//TODO Fix points coordinates
 public class ImagePanel extends JPanel {
 
     private BufferedImage image;
@@ -43,6 +44,10 @@ public class ImagePanel extends JPanel {
     private MouseAdapter mouseMoveAdapter = new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
+            int x = e.getX() > image.getWidth() ? image.getWidth() : e.getX();
+            x = x < 0 ? 0 : x;
+            int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
+            y = y < 0 ? 0 : y;
             startDrag = new Point(e.getX(), e.getY());
             endDrag = startDrag;
             repaint();
@@ -50,9 +55,11 @@ public class ImagePanel extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            shapes.add(createRectangle(startDrag.x, startDrag.y, e.getX(), e.getY()));
             int x = e.getX() > image.getWidth() ? image.getWidth() : e.getX();
+            x = x < 0 ? 0 : x;
             int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
+            y = y < 0 ? 0 : y;
+            shapes.add(createRectangle(startDrag.x, startDrag.y, x, y));
             person.setPersonRect(startDrag.x*imageAspectRatio, startDrag.y*imageAspectRatio,
                     x*imageAspectRatio, y*imageAspectRatio);
             startDrag = null;
@@ -76,7 +83,9 @@ public class ImagePanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             int x = e.getX() > image.getWidth() ? image.getWidth() : e.getX();
+            x = x < 0 ? 0 : x;
             int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
+            y = y < 0 ? 0 : y;
             shapes.add(createEllipse(x, y));
             person.addPoint(new Posture.Point(pointsOrder.get(pointsCounter++), x*imageAspectRatio, y*imageAspectRatio));
             if (pointsCounter < pointsOrder.size()) {
@@ -84,6 +93,7 @@ public class ImagePanel extends JPanel {
                 setPointsNameLabel(pointsNames.get(pointsOrder.get(pointsCounter)));
                 setPointsCountLabelText(pointsCounter+1,pointsOrder.size());
             } else {
+                personList.add(person);
                 stopDrawingPoints();
                 setHelperImage(null);
                 setPointsNameLabel("Point name: ");
