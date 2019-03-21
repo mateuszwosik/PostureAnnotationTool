@@ -18,10 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-//TODO Split thic class to View and Controller
+//TODO Split this class to View and Controller (REFACTORING NEEDED!!!)
 public class ImagePanel extends JPanel {
 
     private BufferedImage image;
+    private float imageAspectRatio;
 
     private JLabel pointNameLabel;
     private JLabel pointsCountLabel;
@@ -50,7 +51,10 @@ public class ImagePanel extends JPanel {
         @Override
         public void mouseReleased(MouseEvent e) {
             shapes.add(createRectangle(startDrag.x, startDrag.y, e.getX(), e.getY()));
-            person.setPersonRect(startDrag.x, startDrag.y, e.getX(), e.getY());
+            int x = e.getX() > image.getWidth() ? image.getWidth() : e.getX();
+            int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
+            person.setPersonRect(startDrag.x*imageAspectRatio, startDrag.y*imageAspectRatio,
+                    x*imageAspectRatio, y*imageAspectRatio);
             startDrag = null;
             endDrag = null;
             removeMouseListener(this);
@@ -71,8 +75,10 @@ public class ImagePanel extends JPanel {
     private MouseAdapter mouseClickedAdapter = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-            shapes.add(createEllipse(e.getX(), e.getY()));
-            person.addPoint(new Posture.Point(pointsOrder.get(pointsCounter++), e.getX(), e.getY()));
+            int x = e.getX() > image.getWidth() ? image.getWidth() : e.getX();
+            int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
+            shapes.add(createEllipse(x, y));
+            person.addPoint(new Posture.Point(pointsOrder.get(pointsCounter++), x*imageAspectRatio, y*imageAspectRatio));
             if (pointsCounter < pointsOrder.size()) {
                 setHelperImage(pointsImages.get(pointsOrder.get(pointsCounter)));
                 setPointsNameLabel(pointsNames.get(pointsOrder.get(pointsCounter)));
@@ -218,6 +224,8 @@ public class ImagePanel extends JPanel {
             newWidth = (int) (newHeight * aspectRatio);
         }
 
+        imageAspectRatio = (float)newWidth / (float)newHeight;
+
         // Draw the scaled image
         BufferedImage newImage = new BufferedImage(newWidth, newHeight,
                 imageType);
@@ -227,6 +235,24 @@ public class ImagePanel extends JPanel {
         graphics2D.drawImage(image, 0, 0, newWidth, newHeight, null);
 
         return newImage;
+    }
+
+    public BufferedImage scaleImage(BufferedImage bm, int maxHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+
+        imageAspectRatio = (float)height / (float)maxHeight;
+        height = maxHeight;
+        width = (int)(width / imageAspectRatio);
+
+        // Draw the scaled image
+        BufferedImage newImage = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = newImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.drawImage(bm, 0, 0, width, height, null);
+        return bm;
     }
 
     private Rectangle2D.Float createRectangle(int x1, int y1, int x2, int y2) {
