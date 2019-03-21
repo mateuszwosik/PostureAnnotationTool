@@ -8,7 +8,7 @@ import java.awt.*;
 public class MainForm extends JFrame {
 
     private static final int WIDTH = 800;
-    private static final int HEIGHT = 610;
+    private static final int HEIGHT = 650;
 
     private JPanel mainPanel;
     private JButton openImageButton;
