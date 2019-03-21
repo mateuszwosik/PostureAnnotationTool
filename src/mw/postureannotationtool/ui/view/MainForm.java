@@ -26,6 +26,9 @@ public class MainForm extends JFrame {
     private JLabel pointsCountLabel;
     private ImagePanel imagePanel;
     private JLabel helperImageLabel;
+    private JPanel selectPersonPanel;
+    private JPanel selectPointsPanel;
+    private JPanel saveAnnotationsPanel;
 
     public MainForm(){
         setSize(WIDTH, HEIGHT);
@@ -97,5 +100,17 @@ public class MainForm extends JFrame {
 
     public JLabel getHelperImageLabel() {
         return helperImageLabel;
+    }
+
+    public JPanel getSelectPersonPanel() {
+        return selectPersonPanel;
+    }
+
+    public JPanel getSelectPointsPanel() {
+        return selectPointsPanel;
+    }
+
+    public JPanel getSaveAnnotationsPanel() {
+        return saveAnnotationsPanel;
     }
 }

@@ -33,6 +33,9 @@ public class MainFormController {
     private JLabel pointsCountLabel;
     private ImagePanel imagePanel;
     private JLabel helperImageLabel;
+    private JPanel selectPersonPanel;
+    private JPanel selectPointsPanel;
+    private JPanel saveAnnotationsPanel;
 
     private File directory;
     private List<File> files;
@@ -47,6 +50,12 @@ public class MainFormController {
 
     public void showMainFormWindow(){
         mainForm.setVisible(true);
+    }
+
+    private void hideMenuPanel() {
+        selectPersonPanel.setVisible(false);
+        selectPointsPanel.setVisible(false);
+        saveAnnotationsPanel.setVisible(false);
     }
 
     private void initComponents() {
@@ -68,6 +77,11 @@ public class MainFormController {
         pointsCountLabel = mainForm.getPointsCountLabel();
         imagePanel = mainForm.getImagePanel();
         helperImageLabel = mainForm.getHelperImageLabel();
+        selectPersonPanel = mainForm.getSelectPersonPanel();
+        selectPointsPanel = mainForm.getSelectPointsPanel();
+        saveAnnotationsPanel = mainForm.getSaveAnnotationsPanel();
+
+        hideMenuPanel();
     }
 
     private void initListeners(){
@@ -86,15 +100,17 @@ public class MainFormController {
             files.remove(0);
             displayImage(null);
             filesCountLabel.setText("Number of files left: " + (files.size()));
+            selectPersonPanel.setVisible(true);
         } else if (files.size() > 1) {
             files.remove(0);
             displayImage(files.get(0));
             filesCountLabel.setText("Number of files left: " + (files.size()));
+            selectPersonPanel.setVisible(true);
         }
     }
 
     private void saveAnnotations() {
-
+        hideMenuPanel();
     }
 
     private void openImages() {
@@ -110,6 +126,7 @@ public class MainFormController {
             if (files != null && !files.isEmpty()) {
                 filesCountLabel.setText("Number of files left: " + files.size());
                 displayImage(files.get(0));
+                selectPersonPanel.setVisible(true);
             }
         }
     }
@@ -137,6 +154,7 @@ public class MainFormController {
 
     private void selectPerson(){
         imagePanel.startDrawingRectangle();
+        selectPointsPanel.setVisible(true);
     }
 
     private void selectPoints(){
