@@ -149,10 +149,10 @@ public class MainFormController {
                 icon = new ImageIcon(Posture.BACK_POINTS_IMAGES.get("C7"));
             }
             if (rightRadioButton.isSelected()) {
-                icon = new ImageIcon(Posture.SIDE_POINTS_IMAGES.get("EAR"));
+                icon = new ImageIcon(Posture.SIDE_RIGHT_POINTS_IMAGES.get("EAR"));
             }
             if (leftRadioButton.isSelected()) {
-                icon = new ImageIcon(Posture.SIDE_POINTS_IMAGES.get("EAR"));
+                icon = new ImageIcon(Posture.SIDE_LEFT_POINTS_IMAGES.get("EAR"));
             }
             helperImageLabel.setIcon(icon);
             imagePanel.startDrawingPoints();
