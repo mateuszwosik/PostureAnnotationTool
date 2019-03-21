@@ -1,15 +1,13 @@
 package mw.postureannotationtool.ui.controller;
 
 import mw.postureannotationtool.ui.ImagePanel;
+import mw.postureannotationtool.ui.model.Person;
 import mw.postureannotationtool.ui.model.Posture;
 import mw.postureannotationtool.ui.view.MainForm;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class MainFormController {
 
@@ -36,9 +34,12 @@ public class MainFormController {
     private JPanel selectPersonPanel;
     private JPanel selectPointsPanel;
     private JPanel saveAnnotationsPanel;
+    private JLabel pointNameLabel;
 
     private File directory;
     private List<File> files;
+
+    private int personCounter;
 
     public MainFormController() {
         initComponents();
@@ -80,6 +81,10 @@ public class MainFormController {
         selectPersonPanel = mainForm.getSelectPersonPanel();
         selectPointsPanel = mainForm.getSelectPointsPanel();
         saveAnnotationsPanel = mainForm.getSaveAnnotationsPanel();
+        pointNameLabel = mainForm.getPointNameLabel();
+
+        imagePanel.setPointsComponents(pointNameLabel, pointsCountLabel, helperImageLabel);
+        imagePanel.setSaveAnnotationPanel(saveAnnotationsPanel);
 
         hideMenuPanel();
     }
@@ -96,6 +101,9 @@ public class MainFormController {
     }
 
     private void loadNextImage() {
+        personCounter = 0;
+        selectPointsPanel.setVisible(false);
+        saveAnnotationsPanel.setVisible(false);
         if (files.size() == 1) {
             files.remove(0);
             displayImage(null);
@@ -110,7 +118,9 @@ public class MainFormController {
     }
 
     private void saveAnnotations() {
-        hideMenuPanel();
+        selectPointsPanel.setVisible(false);
+        saveAnnotationsPanel.setVisible(false);
+        imagePanel.getPersonList();
     }
 
     private void openImages() {
@@ -124,7 +134,7 @@ public class MainFormController {
             directory = fileChooser.getSelectedFile();
             files = getImageFiles(directory.listFiles());
             if (files != null && !files.isEmpty()) {
-                filesCountLabel.setText("Number of files left: " + files.size());
+                personCounter = 0;
                 displayImage(files.get(0));
                 selectPersonPanel.setVisible(true);
             }
@@ -135,10 +145,12 @@ public class MainFormController {
         if (file == null) {
             imageNameLabel.setText("Image name:");
             imagePanel.setImage(null);
+            imagePanel.stopDrawingRectangle();
             imagePanel.stopDrawingPoints();
         } else if (file.isFile()) {
             imageNameLabel.setText("Image name: " + file.getName());
             imagePanel.setImage(file);
+            imagePanel.stopDrawingRectangle();
             imagePanel.stopDrawingPoints();
         }
     }
@@ -153,27 +165,26 @@ public class MainFormController {
     }
 
     private void selectPerson(){
-        imagePanel.startDrawingRectangle();
+        imagePanel.startDrawingRectangle(personCounter++);
         selectPointsPanel.setVisible(true);
     }
 
     private void selectPoints(){
         if (frontRadioButton.isSelected() || backRadioButton.isSelected() || rightRadioButton.isSelected() || leftRadioButton.isSelected()) {
-            ImageIcon icon = new ImageIcon();
+            Posture.PostureType postureType = null;
             if (frontRadioButton.isSelected()) {
-                icon = new ImageIcon(Posture.FRONT_POINTS_IMAGES.get("RIGHT_EYE"));
+                postureType = Posture.PostureType.FRONT;
             }
             if (backRadioButton.isSelected()) {
-                icon = new ImageIcon(Posture.BACK_POINTS_IMAGES.get("C7"));
+                postureType = Posture.PostureType.BACK;
             }
             if (rightRadioButton.isSelected()) {
-                icon = new ImageIcon(Posture.SIDE_RIGHT_POINTS_IMAGES.get("EAR"));
+                postureType = Posture.PostureType.RIGHT;
             }
             if (leftRadioButton.isSelected()) {
-                icon = new ImageIcon(Posture.SIDE_LEFT_POINTS_IMAGES.get("EAR"));
+                postureType = Posture.PostureType.LEFT;
             }
-            helperImageLabel.setIcon(icon);
-            imagePanel.startDrawingPoints();
+            imagePanel.startDrawingPoints(postureType);
         } else {
             JOptionPane.showMessageDialog(mainForm,"Select posture type");
         }

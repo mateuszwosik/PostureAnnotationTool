@@ -29,6 +29,7 @@ public class MainForm extends JFrame {
     private JPanel selectPersonPanel;
     private JPanel selectPointsPanel;
     private JPanel saveAnnotationsPanel;
+    private JLabel pointNameLabel;
 
     public MainForm(){
         setSize(WIDTH, HEIGHT);
@@ -112,5 +113,9 @@ public class MainForm extends JFrame {
 
     public JPanel getSaveAnnotationsPanel() {
         return saveAnnotationsPanel;
+    }
+
+    public JLabel getPointNameLabel() {
+        return pointNameLabel;
     }
 }

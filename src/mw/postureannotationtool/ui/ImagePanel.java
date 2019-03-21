@@ -1,5 +1,8 @@
 package mw.postureannotationtool.ui;
 
+import mw.postureannotationtool.ui.model.Person;
+import mw.postureannotationtool.ui.model.Posture;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -12,14 +15,28 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ImagePanel extends JPanel {
 
     private BufferedImage image;
 
-    ArrayList<Shape> shapes;
+    private JLabel pointNameLabel;
+    private JLabel pointsCountLabel;
+    private JLabel helperImageLabel;
+    private JPanel saveAnnotationPanel;
 
-    Point startDrag, endDrag;
+    private Person person;
+    private List<Person> personList;
+    private int pointsCounter;
+    private List<String> pointsOrder;
+    private Map<String, String> pointsNames;
+    private Map<String, String> pointsImages;
+
+    private ArrayList<Shape> shapes;
+
+    private Point startDrag, endDrag;
 
     private MouseAdapter mouseMoveAdapter = new MouseAdapter() {
         @Override
@@ -32,6 +49,7 @@ public class ImagePanel extends JPanel {
         @Override
         public void mouseReleased(MouseEvent e) {
             shapes.add(createRectangle(startDrag.x, startDrag.y, e.getX(), e.getY()));
+            person.setPersonRect(startDrag.x, startDrag.y, e.getX(), e.getY());
             startDrag = null;
             endDrag = null;
             removeMouseListener(this);
@@ -53,6 +71,17 @@ public class ImagePanel extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             shapes.add(createEllipse(e.getX(), e.getY()));
+            person.addPoint(new Posture.Point(pointsOrder.get(pointsCounter++), e.getX(), e.getY()));
+            if (pointsCounter < pointsOrder.size()) {
+                setHelperImage(pointsImages.get(pointsOrder.get(pointsCounter)));
+                setPointsNameLabel(pointsNames.get(pointsOrder.get(pointsCounter)));
+                setPointsCountLabelText(pointsCounter+1,pointsOrder.size());
+            } else {
+                stopDrawingPoints();
+                setHelperImage(null);
+                setPointsNameLabel("Point name: ");
+                saveAnnotationPanel.setVisible(true);
+            }
             repaint();
         }
     };
@@ -60,7 +89,23 @@ public class ImagePanel extends JPanel {
     public ImagePanel() {
         super();
         image = null;
+        person = null;
+        personList = null;
+        pointsCounter = -1;
+        pointsOrder = null;
+        pointsNames = null;
+        pointsImages = null;
         shapes = null;
+    }
+
+    public void setPointsComponents(JLabel pointNameLabel, JLabel pointsCountLabel, JLabel helperImageLabel) {
+        this.pointNameLabel = pointNameLabel;
+        this.pointsCountLabel = pointsCountLabel;
+        this.helperImageLabel = helperImageLabel;
+    }
+
+    public void setSaveAnnotationPanel(JPanel saveAnnotationsPanel){
+        this.saveAnnotationPanel = saveAnnotationsPanel;
     }
 
     public void setImage(File file) {
@@ -73,21 +118,67 @@ public class ImagePanel extends JPanel {
                 e.printStackTrace();
             }
         }
+        personList = new ArrayList<>();
         shapes = new ArrayList<>();
         repaint();
     }
 
-    public void startDrawingRectangle() {
+    public void startDrawingRectangle(int personId) {
+        if (person != null && pointsOrder != null && pointsCounter == pointsOrder.size()-1) {
+            personList.add(person);
+            pointsCounter = -1;
+        }
+        person = new Person(personId);
         addMouseListener(mouseMoveAdapter);
         addMouseMotionListener(mouseMotionAdapter);
     }
 
-    public void startDrawingPoints() {
+    public void stopDrawingRectangle() {
+        removeMouseListener(mouseMoveAdapter);
+        removeMouseMotionListener(mouseMotionAdapter);
+    }
+
+    public void startDrawingPoints(Posture.PostureType postureType) {
+        setPostureParameters(postureType);
+        pointsCounter = 0;
+        person.setPostureType(postureType);
+        setHelperImage(pointsImages.get(pointsOrder.get(pointsCounter)));
+        setPointsNameLabel(pointsNames.get(pointsOrder.get(pointsCounter)));
+        setPointsCountLabelText(pointsCounter+1,pointsOrder.size());
         addMouseListener(mouseClickedAdapter);
     }
 
     public void stopDrawingPoints() {
         removeMouseListener(mouseClickedAdapter);
+    }
+
+    public List<Person> getPersonList(){
+        return personList;
+    }
+
+    private void setPostureParameters(Posture.PostureType postureType) {
+        switch (postureType) {
+            case FRONT:
+                pointsOrder = Posture.FRONT_POINTS_ORDER;
+                pointsNames = Posture.FRONT_POINTS_NAMES;
+                pointsImages = Posture.FRONT_POINTS_IMAGES;
+                break;
+            case BACK:
+                pointsOrder = Posture.BACK_POINTS_ORDER;
+                pointsNames = Posture.BACK_POINTS_NAMES;
+                pointsImages = Posture.BACK_POINTS_IMAGES;
+                break;
+            case RIGHT:
+                pointsOrder = Posture.SIDE_POINTS_ORDER;
+                pointsNames = Posture.SIDE_POINTS_NAMES;
+                pointsImages = Posture.SIDE_RIGHT_POINTS_IMAGES;
+                break;
+            case LEFT:
+                pointsOrder = Posture.SIDE_POINTS_ORDER;
+                pointsNames = Posture.SIDE_POINTS_NAMES;
+                pointsImages = Posture.SIDE_LEFT_POINTS_IMAGES;
+                break;
+        }
     }
 
     @Override
@@ -143,6 +234,18 @@ public class ImagePanel extends JPanel {
 
     private Ellipse2D.Float createEllipse(int x, int y) {
         return new Ellipse2D.Float(x-2, y-2, 4, 4);
+    }
+
+    private void setHelperImage(String imagePath){
+        helperImageLabel.setIcon(new ImageIcon(imagePath));
+    }
+
+    private void setPointsNameLabel(String pointName) {
+        pointNameLabel.setText(pointName);
+    }
+
+    private void setPointsCountLabelText(int currentPoint, int pointsCount) {
+        pointsCountLabel.setText(currentPoint + "/" + pointsCount);
     }
 
 }

@@ -155,7 +155,7 @@ public abstract class Posture {
         }
     }
 
-    public class Point {
+    public static class Point {
 
         private String name;
         private double x;
