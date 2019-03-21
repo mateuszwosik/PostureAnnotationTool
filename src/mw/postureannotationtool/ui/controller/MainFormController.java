@@ -34,6 +34,8 @@ public class MainFormController {
     private File directory;
     private List<File> files;
 
+    private FileWriter fileWriter;
+
     private int personCounter;
 
     public MainFormController() {
@@ -42,6 +44,8 @@ public class MainFormController {
 
         directory = null;
         files = null;
+
+        fileWriter = new FileWriter();
     }
 
     public void showMainFormWindow(){
@@ -113,7 +117,7 @@ public class MainFormController {
     private void saveAnnotations() {
         selectPointsPanel.setVisible(false);
         saveAnnotationsPanel.setVisible(false);
-        FileWriter.saveToCSVFile(files.get(0), imagePanel.getPersonList());
+        fileWriter.saveToCSVFile(directory, files.get(0), imagePanel.getPersonList());
     }
 
     private void openImages() {
