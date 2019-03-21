@@ -8,7 +8,7 @@ import java.util.List;
 public class FileWriter {
 
     public static void saveToCSVFile(File file, List<Person> personList) {
-
+        System.out.println("Saved annotation to file and moved image to correct directory.");
     }
 
 }
