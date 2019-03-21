@@ -1,9 +1,9 @@
 package mw.postureannotationtool.ui.controller;
 
 import mw.postureannotationtool.ui.ImagePanel;
-import mw.postureannotationtool.ui.model.Person;
 import mw.postureannotationtool.ui.model.Posture;
 import mw.postureannotationtool.ui.view.MainForm;
+import mw.postureannotationtool.utils.FileWriter;
 
 import javax.swing.*;
 import java.io.File;
@@ -15,7 +15,6 @@ public class MainFormController {
 
     private MainForm mainForm;
 
-    private JPanel mainPanel;
     private JButton openImageButton;
     private JRadioButton frontRadioButton;
     private JRadioButton backRadioButton;
@@ -27,14 +26,10 @@ public class MainFormController {
     private JLabel filesCountLabel;
     private JButton nextImageButton;
     private JLabel imageNameLabel;
-    private JPanel panel;
-    private JLabel pointsCountLabel;
     private ImagePanel imagePanel;
-    private JLabel helperImageLabel;
     private JPanel selectPersonPanel;
     private JPanel selectPointsPanel;
     private JPanel saveAnnotationsPanel;
-    private JLabel pointNameLabel;
 
     private File directory;
     private List<File> files;
@@ -62,7 +57,6 @@ public class MainFormController {
     private void initComponents() {
         mainForm = new MainForm();
 
-        mainPanel = mainForm.getMainPanel();
         openImageButton = mainForm.getOpenImageButton();
         frontRadioButton = mainForm.getFrontRadioButton();
         backRadioButton = mainForm.getBackRadioButton();
@@ -74,14 +68,13 @@ public class MainFormController {
         filesCountLabel = mainForm.getFilesCountLabel();
         nextImageButton = mainForm.getNextImageButton();
         imageNameLabel = mainForm.getImageNameLabel();
-        panel = mainForm.getPanel();
-        pointsCountLabel = mainForm.getPointsCountLabel();
+        JLabel pointsCountLabel = mainForm.getPointsCountLabel();
         imagePanel = mainForm.getImagePanel();
-        helperImageLabel = mainForm.getHelperImageLabel();
+        JLabel helperImageLabel = mainForm.getHelperImageLabel();
         selectPersonPanel = mainForm.getSelectPersonPanel();
         selectPointsPanel = mainForm.getSelectPointsPanel();
         saveAnnotationsPanel = mainForm.getSaveAnnotationsPanel();
-        pointNameLabel = mainForm.getPointNameLabel();
+        JLabel pointNameLabel = mainForm.getPointNameLabel();
 
         imagePanel.setPointsComponents(pointNameLabel, pointsCountLabel, helperImageLabel);
         imagePanel.setSaveAnnotationPanel(saveAnnotationsPanel);
@@ -120,7 +113,7 @@ public class MainFormController {
     private void saveAnnotations() {
         selectPointsPanel.setVisible(false);
         saveAnnotationsPanel.setVisible(false);
-        imagePanel.getPersonList();
+        FileWriter.saveToCSVFile(files.get(0), imagePanel.getPersonList());
     }
 
     private void openImages() {

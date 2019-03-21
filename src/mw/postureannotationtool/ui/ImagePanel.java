@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+//TODO Split thic class to View and Controller
 public class ImagePanel extends JPanel {
 
     private BufferedImage image;
