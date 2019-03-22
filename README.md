@@ -1,2 +1,2 @@
 # PostureAnnotationTool
-Java app used to create posture annotation.
+Java app used to create posture annotations.
