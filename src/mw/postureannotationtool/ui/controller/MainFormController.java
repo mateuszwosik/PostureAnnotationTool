@@ -7,7 +7,9 @@ import mw.postureannotationtool.utils.FileWriter;
 
 import javax.swing.*;
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainFormController {
 
@@ -30,6 +32,7 @@ public class MainFormController {
     private JPanel selectPersonPanel;
     private JPanel selectPointsPanel;
     private JPanel saveAnnotationsPanel;
+    private JButton removeImageButton;
 
     private File directory;
     private List<File> files;
@@ -79,6 +82,7 @@ public class MainFormController {
         selectPointsPanel = mainForm.getSelectPointsPanel();
         saveAnnotationsPanel = mainForm.getSaveAnnotationsPanel();
         JLabel pointNameLabel = mainForm.getPointNameLabel();
+        removeImageButton = mainForm.getRemoveImageButton();
 
         imagePanel.setPointsComponents(pointNameLabel, pointsCountLabel, helperImageLabel);
         imagePanel.setSaveAnnotationPanel(saveAnnotationsPanel);
@@ -95,6 +99,12 @@ public class MainFormController {
         nextImageButton.addActionListener(e -> loadNextImage());
         selectPersonButton.addActionListener(e -> selectPerson());
         selectPointsButton.addActionListener(e -> selectPoints());
+        removeImageButton.addActionListener(e -> {
+            if (files != null && directory != null && !files.isEmpty()) {
+                fileWriter.moveImageToTrash(files.get(0), directory);
+                loadNextImage();
+            }
+        });
     }
 
     private void loadNextImage() {

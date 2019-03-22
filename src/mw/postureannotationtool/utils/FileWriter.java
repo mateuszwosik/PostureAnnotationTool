@@ -15,6 +15,7 @@ public class FileWriter {
 
     private static final String LABELS_DIRECTORY = "labels";
     private static final String IMAGES_DIRECTORY = "images";
+    private static final String TRASH_DIRECTORY = "trash";
 
     public void saveToCSVAndMoveFile(File directory, File file, List<Person> personList) {
         String postureType = personList.get(0).getPostureType().getName();
@@ -35,15 +36,19 @@ public class FileWriter {
             fileWriter.append(sb);
             fileWriter.flush();
 
-            moveImage(file, parentPath);
+            moveImage(file, parentPath, IMAGES_DIRECTORY);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void moveImage(File file, String targetParentDirectoryPath) {
-        File parentDirectory = new File(targetParentDirectoryPath + "/" + IMAGES_DIRECTORY);
+    public void moveImageToTrash(File file, File directory) {
+        moveImage(file, directory.getPath(), TRASH_DIRECTORY);
+    }
+
+    private void moveImage(File file, String targetParentDirectoryPath, String directoryName) {
+        File parentDirectory = new File(targetParentDirectoryPath + "/" + directoryName);
         if (!parentDirectory.exists()) {
             //noinspection ResultOfMethodCallIgnored
             parentDirectory.mkdirs();

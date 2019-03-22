@@ -29,6 +29,7 @@ public class MainForm extends JFrame {
     private JPanel selectPointsPanel;
     private JPanel saveAnnotationsPanel;
     private JLabel pointNameLabel;
+    private JButton removeImageButton;
 
     public MainForm(){
         setSize(WIDTH, HEIGHT);
@@ -109,5 +110,9 @@ public class MainForm extends JFrame {
 
     public JLabel getPointNameLabel() {
         return pointNameLabel;
+    }
+
+    public JButton getRemoveImageButton() {
+        return removeImageButton;
     }
 }
