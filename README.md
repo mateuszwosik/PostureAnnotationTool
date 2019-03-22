@@ -10,7 +10,7 @@ Java app used to create posture annotations used in posture assessment.
 2. Click on button 'Select person' and draw rectangle.
 3. Select posture type (front / back / right / left).
 4. Click on button 'Select points' to select specific points on image.
-Which point to select will be indicated by printing its name (polish name :poland:) and showing helper image.
+Which point to select will be indicated by printing its name (polish names :poland:) and showing helper image.
 5. After all points are selected click on button 'Save labels' to save annotation to file.
 Annotations will be saved to file with the same name as an image in directory 'posture_type'/labels.
 After saving annotations image will be moved to directory 'posture_type'/images.
