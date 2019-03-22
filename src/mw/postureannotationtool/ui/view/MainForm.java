@@ -35,6 +35,7 @@ public class MainForm extends JFrame {
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("PostureAnnotationTool");
+        setIconImage(new ImageIcon(getClass().getResource("/images/icon.png")).getImage());
         setContentPane(mainPanel);
     }
 

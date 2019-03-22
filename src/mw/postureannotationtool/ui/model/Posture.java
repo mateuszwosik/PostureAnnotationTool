@@ -19,16 +19,16 @@ public abstract class Posture {
             "RIGHT_ANKLE",
             "LEFT_ANKLE");
     public static final Map<String, String> FRONT_POINTS_IMAGES = Map.of(
-            "RIGHT_EYE","res/images/front/right_eye.jpg",
-            "LEFT_EYE","res/images/front/left_eye.jpg",
-            "CHIN","res/images/front/chin.jpg",
-            "MANUBRIUM","res/images/front/manubrium.jpg",
-            "RIGHT_SHOULDER","res/images/front/right_shoulder.jpg",
-            "LEFT_SHOULDER","res/images/front/left_shoulder.jpg",
-            "RIGHT_ASIS","res/images/front/right_asis.jpg",
-            "LEFT_ASIS","res/images/front/left_asis.jpg",
-            "RIGHT_ANKLE","res/images/front/right_ankle.jpg",
-            "LEFT_ANKLE","res/images/front/left_ankle.jpg");
+            "RIGHT_EYE", "/images/front/right_eye.jpg",
+            "LEFT_EYE", "/images/front/left_eye.jpg",
+            "CHIN", "/images/front/chin.jpg",
+            "MANUBRIUM", "/images/front/manubrium.jpg",
+            "RIGHT_SHOULDER", "/images/front/right_shoulder.jpg",
+            "LEFT_SHOULDER", "/images/front/left_shoulder.jpg",
+            "RIGHT_ASIS", "/images/front/right_asis.jpg",
+            "LEFT_ASIS", "/images/front/left_asis.jpg",
+            "RIGHT_ANKLE", "/images/front/right_ankle.jpg",
+            "LEFT_ANKLE", "/images/front/left_ankle.jpg");
     public static final Map<String, String> FRONT_POINTS_NAMES = Map.of(
             "RIGHT_EYE","Prawe oko",
             "LEFT_EYE","Lewe oko",
@@ -55,17 +55,17 @@ public abstract class Posture {
             "LEFT_HEEL",
             "RIGHT_HEEL");
     public static final Map<String, String> BACK_POINTS_IMAGES = Stream.of(new String[][]{
-            {"C7","res/images/back/c7.jpg"},
-            {"TH12","res/images/back/th12.jpg"},
-            {"S1","res/images/back/s1.jpg"},
-            {"LEFT_SHOULDER_BLADE","res/images/back/left_shoulder_blade.jpg"},
-            {"LEFT_LOWER_ANGLE_SHOULDER_BLADE","res/images/back/left_lower_angle_shoulder_blade.jpg"},
-            {"RIGHT_SHOULDER_BLADE","res/images/back/right_shoulder_blade.jpg"},
-            {"RIGHT_LOWER_ANGLE_SHOULDER_BLADE","res/images/back/right_lower_angle_shoulder_blade.jpg"},
-            {"LEFT_PSIS","res/images/back/left_psis.jpg"},
-            {"RIGHT_PSIS","res/images/back/right_psis.jpg"},
-            {"LEFT_HEEL","res/images/back/left_heel.jpg"},
-            {"RIGHT_HEEL","res/images/back/right_heel.jpg"}
+            {"C7", "/images/back/c7.jpg"},
+            {"TH12", "/images/back/th12.jpg"},
+            {"S1", "/images/back/s1.jpg"},
+            {"LEFT_SHOULDER_BLADE", "/images/back/left_shoulder_blade.jpg"},
+            {"LEFT_LOWER_ANGLE_SHOULDER_BLADE", "/images/back/left_lower_angle_shoulder_blade.jpg"},
+            {"RIGHT_SHOULDER_BLADE", "/images/back/right_shoulder_blade.jpg"},
+            {"RIGHT_LOWER_ANGLE_SHOULDER_BLADE", "/images/back/right_lower_angle_shoulder_blade.jpg"},
+            {"LEFT_PSIS", "/images/back/left_psis.jpg"},
+            {"RIGHT_PSIS", "/images/back/right_psis.jpg"},
+            {"LEFT_HEEL", "/images/back/left_heel.jpg"},
+            {"RIGHT_HEEL", "/images/back/right_heel.jpg"}
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
     public static final Map<String, String> BACK_POINTS_NAMES = Stream.of(new String[][]{
             {"C7","Wyrostek kolczysty C7"},
@@ -96,32 +96,32 @@ public abstract class Posture {
             "KNEE",
             "ANKLE");
     public static final Map<String, String> SIDE_LEFT_POINTS_IMAGES = Stream.of(new String[][]{
-            {"EAR","res/images/left/ear.jpg"},
-            {"SHOULDER","res/images/left/shoulder.jpg"},
-            {"C7","res/images/left/c7.jpg"},
-            {"TH12","res/images/left/th12.jpg"},
-            {"TH10","res/images/left/th10.jpg"},
-            {"TH4","res/images/left/th4.jpg"},
-            {"S1","res/images/left/s1.jpg"},
-            {"ASIS","res/images/left/asis.jpg"},
-            {"PSIS","res/images/left/psis.jpg"},
-            {"TROCHLEADER","res/images/left/trochleader.jpg"},
-            {"KNEE","res/images/left/knee.jpg"},
-            {"ANKLE","res/images/left/ankle.jpg"}
+            {"EAR", "/images/left/ear.jpg"},
+            {"SHOULDER", "/images/left/shoulder.jpg"},
+            {"C7", "/images/left/c7.jpg"},
+            {"TH12", "/images/left/th12.jpg"},
+            {"TH10", "/images/left/th10.jpg"},
+            {"TH4", "/images/left/th4.jpg"},
+            {"S1", "/images/left/s1.jpg"},
+            {"ASIS", "/images/left/asis.jpg"},
+            {"PSIS", "/images/left/psis.jpg"},
+            {"TROCHLEADER", "/images/left/trochleader.jpg"},
+            {"KNEE", "/images/left/knee.jpg"},
+            {"ANKLE", "/images/left/ankle.jpg"}
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
     public static final Map<String, String> SIDE_RIGHT_POINTS_IMAGES = Stream.of(new String[][]{
-            {"EAR","res/images/right/ear.jpg"},
-            {"SHOULDER","res/images/right/shoulder.jpg"},
-            {"C7","res/images/right/c7.jpg"},
-            {"TH12","res/images/right/th12.jpg"},
-            {"TH10","res/images/right/th10.jpg"},
-            {"TH4","res/images/right/th4.jpg"},
-            {"S1","res/images/right/s1.jpg"},
-            {"ASIS","res/images/right/asis.jpg"},
-            {"PSIS","res/images/right/psis.jpg"},
-            {"TROCHLEADER","res/images/right/trochleader.jpg"},
-            {"KNEE","res/images/right/knee.jpg"},
-            {"ANKLE","res/images/right/ankle.jpg"}
+            {"EAR", "/images/right/ear.jpg"},
+            {"SHOULDER", "/images/right/shoulder.jpg"},
+            {"C7", "/images/right/c7.jpg"},
+            {"TH12", "/images/right/th12.jpg"},
+            {"TH10", "/images/right/th10.jpg"},
+            {"TH4", "/images/right/th4.jpg"},
+            {"S1", "/images/right/s1.jpg"},
+            {"ASIS", "/images/right/asis.jpg"},
+            {"PSIS", "/images/right/psis.jpg"},
+            {"TROCHLEADER", "/images/right/trochleader.jpg"},
+            {"KNEE", "/images/right/knee.jpg"},
+            {"ANKLE", "/images/right/ankle.jpg"}
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
     public static final Map<String, String> SIDE_POINTS_NAMES = Stream.of(new String[][]{
             {"EAR","Środek ucha (kanał słuchowy)"},

@@ -1,8 +1,8 @@
 package mw.postureannotationtool.ui;
 
+import mw.postureannotationtool.ui.model.Posture;
 import mw.postureannotationtool.utils.Image;
 import mw.postureannotationtool.ui.model.Person;
-import mw.postureannotationtool.ui.model.Posture;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,7 +22,7 @@ import java.util.Map;
 //TODO Split this class to View and Controller
 public class ImagePanel extends JPanel {
 
-    private Image image;
+    private mw.postureannotationtool.utils.Image image;
 
     private JLabel pointNameLabel;
     private JLabel pointsCountLabel;
@@ -225,7 +225,11 @@ public class ImagePanel extends JPanel {
     }
 
     private void setHelperImage(String imagePath){
-        helperImageLabel.setIcon(new ImageIcon(imagePath));
+        if (imagePath != null) {
+            helperImageLabel.setIcon(new ImageIcon(getClass().getResource(imagePath)));
+        } else {
+            helperImageLabel.setIcon(null);
+        }
     }
 
     private void setPointsNameLabel(String pointName) {
