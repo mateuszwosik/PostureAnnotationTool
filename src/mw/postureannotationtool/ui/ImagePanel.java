@@ -1,5 +1,6 @@
 package mw.postureannotationtool.ui;
 
+import mw.postureannotationtool.utils.Image;
 import mw.postureannotationtool.ui.model.Person;
 import mw.postureannotationtool.ui.model.Posture;
 
@@ -19,11 +20,9 @@ import java.util.List;
 import java.util.Map;
 
 //TODO Split this class to View and Controller (REFACTORING NEEDED!!!)
-//TODO Fix points coordinates
 public class ImagePanel extends JPanel {
 
-    private BufferedImage image;
-    private float imageAspectRatio;
+    private Image image;
 
     private JLabel pointNameLabel;
     private JLabel pointsCountLabel;
@@ -60,8 +59,8 @@ public class ImagePanel extends JPanel {
             int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
             y = y < 0 ? 0 : y;
             shapes.add(createRectangle(startDrag.x, startDrag.y, x, y));
-            person.setPersonRect(startDrag.x*imageAspectRatio, startDrag.y*imageAspectRatio,
-                    x*imageAspectRatio, y*imageAspectRatio);
+            person.setPersonRect(startDrag.x*image.getWidthAspectRatio(), startDrag.y*image.getHeightAspectRatio(),
+                    x*image.getWidthAspectRatio(), y*image.getHeightAspectRatio());
             startDrag = null;
             endDrag = null;
             removeMouseListener(this);
@@ -87,7 +86,8 @@ public class ImagePanel extends JPanel {
             int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
             y = y < 0 ? 0 : y;
             shapes.add(createEllipse(x, y));
-            person.addPoint(new Posture.Point(pointsOrder.get(pointsCounter++), x*imageAspectRatio, y*imageAspectRatio));
+            person.addPoint(new Posture.Point(pointsOrder.get(pointsCounter++),
+                    x*image.getWidthAspectRatio(), y*image.getHeightAspectRatio()));
             if (pointsCounter < pointsOrder.size()) {
                 setHelperImage(pointsImages.get(pointsOrder.get(pointsCounter)));
                 setPointsNameLabel(pointsNames.get(pointsOrder.get(pointsCounter)));
@@ -130,7 +130,8 @@ public class ImagePanel extends JPanel {
             image = null;
         } else {
             try {
-                image = scaleImage(ImageIO.read(file), BufferedImage.TYPE_INT_RGB, 250, 500);
+
+                image = Image.scaleImage(ImageIO.read(file), BufferedImage.TYPE_INT_RGB, 250, 550);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -203,7 +204,7 @@ public class ImagePanel extends JPanel {
         super.paintComponent(g);
         if (image != null) {
             Graphics2D graphics2D = (Graphics2D) g.create();
-            graphics2D.drawImage(image, 0, 0, this);
+            graphics2D.drawImage(image.getBufferedImage(), 0, 0, this);
 
             for (Shape shape : shapes){
                 graphics2D.setColor(Color.RED);
@@ -219,50 +220,6 @@ public class ImagePanel extends JPanel {
 
             graphics2D.dispose();
         }
-    }
-
-    private BufferedImage scaleImage(BufferedImage image, int imageType, int newWidth, int newHeight) {
-        // Make sure the aspect ratio is maintained, so the image is not distorted
-        double thumbRatio = (double) newWidth / (double) newHeight;
-        int imageWidth = image.getWidth(null);
-        int imageHeight = image.getHeight(null);
-        double aspectRatio = (double) imageWidth / (double) imageHeight;
-
-        if (thumbRatio < aspectRatio) {
-            newHeight = (int) (newWidth / aspectRatio);
-        } else {
-            newWidth = (int) (newHeight * aspectRatio);
-        }
-
-        imageAspectRatio = (float)newWidth / (float)newHeight;
-
-        // Draw the scaled image
-        BufferedImage newImage = new BufferedImage(newWidth, newHeight,
-                imageType);
-        Graphics2D graphics2D = newImage.createGraphics();
-        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        graphics2D.drawImage(image, 0, 0, newWidth, newHeight, null);
-
-        return newImage;
-    }
-
-    public BufferedImage scaleImage(BufferedImage bm, int maxHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-
-        imageAspectRatio = (float)height / (float)maxHeight;
-        height = maxHeight;
-        width = (int)(width / imageAspectRatio);
-
-        // Draw the scaled image
-        BufferedImage newImage = new BufferedImage(width, height,
-                BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics2D = newImage.createGraphics();
-        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        graphics2D.drawImage(bm, 0, 0, width, height, null);
-        return bm;
     }
 
     private Rectangle2D.Float createRectangle(int x1, int y1, int x2, int y2) {
