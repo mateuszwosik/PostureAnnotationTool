@@ -22,7 +22,6 @@ public class MainForm extends JFrame {
     private JLabel filesCountLabel;
     private JButton nextImageButton;
     private JLabel imageNameLabel;
-    private JPanel panel;
     private JLabel pointsCountLabel;
     private ImagePanel imagePanel;
     private JLabel helperImageLabel;
@@ -37,10 +36,6 @@ public class MainForm extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("PostureAnnotationTool");
         setContentPane(mainPanel);
-    }
-
-    public JPanel getMainPanel() {
-        return mainPanel;
     }
 
     public JButton getOpenImageButton() {
@@ -85,10 +80,6 @@ public class MainForm extends JFrame {
 
     public JLabel getImageNameLabel() {
         return imageNameLabel;
-    }
-
-    public JPanel getPanel() {
-        return panel;
     }
 
     public JLabel getPointsCountLabel() {

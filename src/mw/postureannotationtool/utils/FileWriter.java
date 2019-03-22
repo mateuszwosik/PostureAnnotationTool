@@ -16,24 +16,23 @@ public class FileWriter {
     private static final String LABELS_DIRECTORY = "labels";
     private static final String IMAGES_DIRECTORY = "images";
 
-    public void saveToCSVFile(File directory, File file, List<Person> personList) {
+    public void saveToCSVAndMoveFile(File directory, File file, List<Person> personList) {
         String postureType = personList.get(0).getPostureType().getName();
         String parentPath = directory.getPath() + "/" + postureType;
         File parentDirectory = new File(parentPath + "/" + LABELS_DIRECTORY);
         if (!parentDirectory.exists()) {
+            //noinspection ResultOfMethodCallIgnored
             parentDirectory.mkdirs();
         }
         String annotationFileName = file.getName().split("\\.")[0].concat(".csv");
         try (PrintWriter fileWriter = new PrintWriter(parentDirectory.getPath() +
                  "/" + annotationFileName)) {
-            StringBuilder sb = new StringBuilder();
 
-            sb.append(file.getName());
-            sb.append("\n");
+            String sb = file.getName() +
+                    "\n" +
+                    formatPersonListToString(personList);
 
-            sb.append(formatPersonListToString(personList));
-
-            fileWriter.append(sb.toString());
+            fileWriter.append(sb);
             fileWriter.flush();
 
             moveImage(file, parentPath);
@@ -43,9 +42,10 @@ public class FileWriter {
         }
     }
 
-    public void moveImage(File file, String targetParentDirectoryPath) {
+    private void moveImage(File file, String targetParentDirectoryPath) {
         File parentDirectory = new File(targetParentDirectoryPath + "/" + IMAGES_DIRECTORY);
         if (!parentDirectory.exists()) {
+            //noinspection ResultOfMethodCallIgnored
             parentDirectory.mkdirs();
         }
         try {
@@ -65,28 +65,21 @@ public class FileWriter {
     }
 
     private String formatPersonToString(Person person) {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(person.getId());
-        sb.append(";");
-        sb.append(person.getX1());
-        sb.append(";");
-        sb.append(person.getY1());
-        sb.append(";");
-        sb.append(person.getX2());
-        sb.append(";");
-        sb.append(person.getY2());
-        sb.append("\n");
-
-        sb.append(person.getPostureType().getName());
-        sb.append("\n");
-
-        sb.append(person.getPoints().size());
-        sb.append("\n");
-
-        sb.append(formatPointsToString(person.getPoints()));
-
-        return sb.toString();
+        return person.getId() +
+                ";" +
+                person.getX1() +
+                ";" +
+                person.getY1() +
+                ";" +
+                person.getX2() +
+                ";" +
+                person.getY2() +
+                "\n" +
+                person.getPostureType().getName() +
+                "\n" +
+                person.getPoints().size() +
+                "\n" +
+                formatPointsToString(person.getPoints());
     }
 
     private String formatPointsToString(List<Posture.Point> points) {

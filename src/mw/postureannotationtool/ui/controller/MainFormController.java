@@ -117,7 +117,7 @@ public class MainFormController {
     private void saveAnnotations() {
         selectPointsPanel.setVisible(false);
         saveAnnotationsPanel.setVisible(false);
-        fileWriter.saveToCSVFile(directory, files.get(0), imagePanel.getPersonList());
+        fileWriter.saveToCSVAndMoveFile(directory, files.get(0), imagePanel.getPersonList());
     }
 
     private void openImages() {

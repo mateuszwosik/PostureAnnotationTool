@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-//TODO Split this class to View and Controller (REFACTORING NEEDED!!!)
+//TODO Split this class to View and Controller
 public class ImagePanel extends JPanel {
 
     private Image image;
@@ -43,21 +43,17 @@ public class ImagePanel extends JPanel {
     private MouseAdapter mouseMoveAdapter = new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent e) {
-            int x = e.getX() > image.getWidth() ? image.getWidth() : e.getX();
-            x = x < 0 ? 0 : x;
-            int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
-            y = y < 0 ? 0 : y;
-            startDrag = new Point(e.getX(), e.getY());
+            int x = getRestrictedCoordinate(e.getX(), image.getWidth());
+            int y = getRestrictedCoordinate(e.getY(), image.getHeight());
+            startDrag = new Point(x, y);
             endDrag = startDrag;
             repaint();
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            int x = e.getX() > image.getWidth() ? image.getWidth() : e.getX();
-            x = x < 0 ? 0 : x;
-            int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
-            y = y < 0 ? 0 : y;
+            int x = getRestrictedCoordinate(e.getX(), image.getWidth());
+            int y = getRestrictedCoordinate(e.getY(), image.getHeight());
             shapes.add(createRectangle(startDrag.x, startDrag.y, x, y));
             person.setPersonRect(startDrag.x*image.getWidthAspectRatio(), startDrag.y*image.getHeightAspectRatio(),
                     x*image.getWidthAspectRatio(), y*image.getHeightAspectRatio());
@@ -81,10 +77,8 @@ public class ImagePanel extends JPanel {
     private MouseAdapter mouseClickedAdapter = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-            int x = e.getX() > image.getWidth() ? image.getWidth() : e.getX();
-            x = x < 0 ? 0 : x;
-            int y = e.getY() > image.getHeight() ? image.getHeight() : e.getY();
-            y = y < 0 ? 0 : y;
+            int x = getRestrictedCoordinate(e.getX(), image.getWidth());
+            int y = getRestrictedCoordinate(e.getY(), image.getHeight());
             shapes.add(createEllipse(x, y));
             person.addPoint(new Posture.Point(pointsOrder.get(pointsCounter++),
                     x*image.getWidthAspectRatio(), y*image.getHeightAspectRatio()));
@@ -174,31 +168,6 @@ public class ImagePanel extends JPanel {
         return personList;
     }
 
-    private void setPostureParameters(Posture.PostureType postureType) {
-        switch (postureType) {
-            case FRONT:
-                pointsOrder = Posture.FRONT_POINTS_ORDER;
-                pointsNames = Posture.FRONT_POINTS_NAMES;
-                pointsImages = Posture.FRONT_POINTS_IMAGES;
-                break;
-            case BACK:
-                pointsOrder = Posture.BACK_POINTS_ORDER;
-                pointsNames = Posture.BACK_POINTS_NAMES;
-                pointsImages = Posture.BACK_POINTS_IMAGES;
-                break;
-            case RIGHT:
-                pointsOrder = Posture.SIDE_POINTS_ORDER;
-                pointsNames = Posture.SIDE_POINTS_NAMES;
-                pointsImages = Posture.SIDE_RIGHT_POINTS_IMAGES;
-                break;
-            case LEFT:
-                pointsOrder = Posture.SIDE_POINTS_ORDER;
-                pointsNames = Posture.SIDE_POINTS_NAMES;
-                pointsImages = Posture.SIDE_LEFT_POINTS_IMAGES;
-                break;
-        }
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -230,6 +199,31 @@ public class ImagePanel extends JPanel {
         return new Ellipse2D.Float(x-2, y-2, 4, 4);
     }
 
+    private void setPostureParameters(Posture.PostureType postureType) {
+        switch (postureType) {
+            case FRONT:
+                pointsOrder = Posture.FRONT_POINTS_ORDER;
+                pointsNames = Posture.FRONT_POINTS_NAMES;
+                pointsImages = Posture.FRONT_POINTS_IMAGES;
+                break;
+            case BACK:
+                pointsOrder = Posture.BACK_POINTS_ORDER;
+                pointsNames = Posture.BACK_POINTS_NAMES;
+                pointsImages = Posture.BACK_POINTS_IMAGES;
+                break;
+            case RIGHT:
+                pointsOrder = Posture.SIDE_POINTS_ORDER;
+                pointsNames = Posture.SIDE_POINTS_NAMES;
+                pointsImages = Posture.SIDE_RIGHT_POINTS_IMAGES;
+                break;
+            case LEFT:
+                pointsOrder = Posture.SIDE_POINTS_ORDER;
+                pointsNames = Posture.SIDE_POINTS_NAMES;
+                pointsImages = Posture.SIDE_LEFT_POINTS_IMAGES;
+                break;
+        }
+    }
+
     private void setHelperImage(String imagePath){
         helperImageLabel.setIcon(new ImageIcon(imagePath));
     }
@@ -240,6 +234,10 @@ public class ImagePanel extends JPanel {
 
     private void setPointsCountLabelText(int currentPoint, int pointsCount) {
         pointsCountLabel.setText(currentPoint + "/" + pointsCount);
+    }
+
+    private int getRestrictedCoordinate(int x, int maxValue) {
+        return (x > maxValue ? maxValue : (x < 0 ? 0 : x));
     }
 
 }
